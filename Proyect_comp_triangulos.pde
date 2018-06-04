@@ -5,8 +5,6 @@ int[][] pos= new int[cant][2];
 int[] rot=new int[cant];
 int[] ang=new int[cant];
 
-int x,y;
-
 void setup() {
   background(0);
   size(600, 600);
@@ -15,16 +13,16 @@ void setup() {
   ellipseMode(CENTER);
   
   for (int i=0;i<cant;i++){
-    tri[i]= new PTriangulo((int)random(20,200));
-    pos[i][0]=(int)random(width);
-    pos[i][1]=(int)random(height);
-    if (random(1)<0.5){rot[i]=-1;} else {rot[i]=1;}
-    ang[i]=(int)random(360);
+    tri[i]= new PTriangulo((int)random(20,50)); // crea objeto y define el tamaño 
+    pos[i][0]=width/2; // posicion de cada objeto
+    pos[i][1]=height/2;
+    if (random(1)<0.5){rot[i]=-1;} else {rot[i]=1;} // sentido de giro
+    ang[i]=(int)random(360); // angulo de arranque (orientacion)
   }
 }
 
 void draw() {
- fondo();
+   fondo();
   //ref_Cent(); 
   for (int i=0;i<cant;i++){
     tri[i].C_Vertices(); 
@@ -34,28 +32,36 @@ void draw() {
         figura(tri[i].centro[1],i); // punto de rotacion, objeto
     popMatrix();
   }
-  for (int i=0;i<cant;i++){
-   int dist=(int)random(8);
+ 
+  for (int i=0;i<cant;i++){  // actualiza la posicion
+   float s=tri[i].lado/2;
+   float dist=map(mouseY,0,height,0,s);
    pos[i][0]=pos[i][0]+(int)random(-dist,dist);
    pos[i][1]=pos[i][1]+(int)random(-dist,dist);
-    
-  } 
+   }
 }
   
   
-void figura(float y,int i){ //movimiento en y, i= objeto
+// figura que se dibuja en pantalla  
+void figura(float y,int i){ //desplazamiento en y, i= numero de objeto
    pushMatrix();
-     translate(0,-y);
-     stroke(i*2,255,i+i);
-     strokeWeight(2);
-     noFill();
-        beginShape();
+   
+     translate(0,-y); // se desplaza sobre el eje y
+      float choice=random(1);
+      color c;
+      if(choice<0.5){ c= color(0); }
+        else{ c= color(255);}
+      float alfa=map(mouseX,0,width,0,255);
+      stroke(255,alfa);
+      strokeWeight(2);
+      noFill();
+        beginShape(); // dibujo de la forma
           vertex(tri[i].vertices[0][0],tri[i].vertices[0][1]);
           vertex(tri[i].vertices[1][0],tri[i].vertices[1][1]);
           vertex(tri[i].vertices[2][0],tri[i].vertices[2][1]);
-        endShape(CLOSE);
+        endShape(CLOSE); 
   popMatrix();
-}
+ }
 ////-----------------guardar
 void salvar(){
   saveFrame("line-######.png");

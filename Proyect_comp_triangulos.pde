@@ -1,25 +1,37 @@
-PMov_Entidad0 ente;
+//*** Variables ***//
+PTriangulo ente;
 
-///------------------ setup
+//*** Setup ***//
 void setup() {
   background(0);
   size(600, 600);
   frameRate(30);
-  ente= new PMov_Entidad0(50);
+  ente= new PTriangulo(20);
+  
+  ente.P_pos.x=width/2;
+  ente.P_pos.y=height/2;
 }
-///----------------- dibujo
+//*** DRAW ***//
 void draw() {
-  fondo();
-  ente.display();
-  ente.update();
-}
-////-----------------guardar
-void salvar(){
-  saveFrame("line-######.png");
+   fondo(0,255);
+   ente.size=50;
+     stroke(255);
+     strokeWeight(1);
+   
+   ente.vertices();
+   ente.movimiento();
+   
+   ente.display();
 }
 
-///----------------- lineas que marcan el centro
-void ref_Cent(){
+
+//*** Guardar ***//
+void salvar(){
+  saveFrame("entidad0_v0.2-######.png");
+}
+
+//*** Ref Central ***//
+void centro(){
  noFill();
    stroke(255,0,0);
    line(0,height/2,width,height/2);
@@ -28,9 +40,9 @@ void ref_Cent(){
  noStroke(); 
 }
 
-///---------------- fondo
-void fondo(){
- fill(0);
+//*** Fondo ***//
+void fondo(int gris,int alfa){
+ fill(gris,alfa);
  noStroke();
  rect(0,0,width,height);
 }

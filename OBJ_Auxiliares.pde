@@ -8,8 +8,8 @@ class PAux{
  }
  //**** FUNCIONES ****//
   //*** Guardar ***//
-  void guardar(){
-      saveFrame(""+"-######.png");
+  void guardar(String nombre){
+      saveFrame(nombre+"-######.png");
   }
 
   //*** Fondo ***//

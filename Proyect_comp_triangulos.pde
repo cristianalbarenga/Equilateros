@@ -1,28 +1,29 @@
 //*** Variables ***//
-PTriangulo ente;
+int cant=10; // cantidad de elementos
+PTriangulo[] ente= new PTriangulo[cant]; // array de elementos
 
-//*** Setup ***//
 void setup() {
   background(0);
   size(600, 600);
   frameRate(30);
-  ente= new PTriangulo(20);
-  
-  ente.P_pos.x=width/2;
-  ente.P_pos.y=height/2;
+  for(int i=0;i<cant;i++){
+    ente[i]= new PTriangulo(random(20,50),random(360)); // creacion de elementos
+    ente[i].P_pos.x=width/2; //posicion inicial X
+    ente[i].P_pos.y=height/2; //posicion inicial Y
+  }
 }
-//*** DRAW ***//
+
 void draw() {
    fondo(0,255);
-   ente.size=50;
      stroke(255);
      strokeWeight(1);
-   
-   ente.vertices();
-   ente.movimiento();
-   
-   ente.display();
+   for (int i=0;i<cant;i++){  
+     ente[i].vertices();
+     ente[i].movimiento();
+     ente[i].display();
+   }
 }
+
 
 
 //*** Guardar ***//

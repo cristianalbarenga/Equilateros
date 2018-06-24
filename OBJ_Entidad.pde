@@ -12,7 +12,7 @@ class PTriangulo{
   
  PVector 
  P_pos= new PVector(), //posicion del centro del triangulo (pivote)
- direccion= new PVector(), // copia de direccion del vertice sup
+ orientacion= new PVector(), // copia direccion del vertice sup, para darle orientacion
  velocidad= new PVector(),
  aceleracion= new PVector();
  
@@ -58,33 +58,45 @@ class PTriangulo{
     popMatrix();   
   }
   
+  //---Direccion---//
+  calcula el vector orientacion frontal (para donde se mueve el ente)
+  void direccion(){
+        orientacion= P_sup.copy(); //la orientacion esta dada por el punto superior
+        orientacion.setMag(1); //se normaliza el vector (magnitud 1)
+  }
+   
   //---Movimiento---//
   void movimiento(){
-    P_pos.add(velocidad);  // a la posicion se le suma la velocidad
-    
-    direccion= P_sup.copy(); //crea vector direc copiando el vector vertice sup
-    direccion.setMag(1); //le asigna una magnitud a vector direccion para usarlo en aceleracion
-    
-    aceleracion = direccion.copy(); // se copia direccion, aceleracion era cero
-    
-    velocidad.add(aceleracion);   //le agrega la aceleracion a velocidad
-    velocidad.limit(vel_Max); // limita la velocidad 
-    
-    eval_limites(); // evalua limites de pantalla
+      velocidad.add(aceleracion);   //le agrega la aceleracion a velocidad
+      velocidad.limit(vel_Max); // limita la velocidad 
+      P_pos.add(velocidad);  // a la posicion se le suma la velocidad
+      aceleracion.mult(0);
+  }
+  
+ //---Fuerza Externa---// se aplica una fuerza que le da un movimiento
+  void aplyFuerza(PVector fuerza){
+     aceleracion.add(fuerza); 
   }
   
  //---evaluacion limites----//
  /* evalua los limites de la pantalla e invierte 
    la velocidad y aceleracion al llegar a esta*/
-  void eval_limites(){
-    if((P_pos.x<0)||(P_pos.x>width)){
-      velocidad.x *= -1; 
-      aceleracion.x *= -1;
-    }
+  void limitesPantalla(){
+    float limX_der=width - P_sup.x;
+    float limX_izq=0 - P_sup.x;
+    float limY_sup=0 - P_sup.y; 
+    float limY_inf=height - P_sup.y;
     
-    if((P_pos.y<0)||(P_pos.y>height)){
-      velocidad.y *= -1;        
-      aceleracion.y *= -1;
+    if((P_pos.x < limX_izq)||(P_pos.x > limX_der)){
+      velocidad.x *= -1; 
+       if(P_pos.x < limX_izq) {P_pos.x= limX_izq;}
+       if(P_pos.x > limX_der) {P_pos.x= limX_der;}
+    }
+  
+    if((P_pos.y < limY_sup )||(P_pos.y > limY_inf)){
+      velocidad.y *= -1;
+      if(P_pos.y < limY_sup) {P_pos.y= limY_sup;}
+      if(P_pos.y > limY_inf) {P_pos.y= limY_inf;}
     }    
   }
  
